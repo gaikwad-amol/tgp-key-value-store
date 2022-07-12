@@ -22,7 +22,7 @@
 	1 req -> (0.000001 * 0.001 * 50) sec = 0.00000005 sec
 	1/0.00000005 = 2,00,00,000 req
 	
-	Hence, Random Memory Read (64 bytes) -> 2 millions RPS
+	Hence, Random Memory Read (64 bytes) -> 20 millions RPS
 	But as the TCP calls is 1,00,000 RPS, so maximum GET is 1,00,000 RPS
 
 ---------------------------------------
