@@ -41,3 +41,6 @@
 	Random memory write -> 2 millions RPS
 	
 	The SSD write is 1000 RPS (ignoring the memory write as the SSD write is higher)
+--------------------------------------
+## Run the application
+    ./gradlew joobyRun
