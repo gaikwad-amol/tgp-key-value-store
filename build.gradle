@@ -15,7 +15,7 @@ repositories {
 
 group "com.tgp"
 version "1.0.0"
-mainClassName = "com.tgp.store.App"
+mainClassName = "com.tgp.store.KeyValueStoreApplication"
 sourceCompatibility = '11'
 
 dependencies {
