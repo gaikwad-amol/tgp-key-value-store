@@ -36,3 +36,4 @@ build
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+/WALs/wal.tmp

@@ -5,6 +5,8 @@ import io.jooby.MockRouter;
 import io.jooby.StatusCode;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -43,6 +45,8 @@ public class KeyValueStoreApplicationTest {
 
     @Test
     public void shouldNotGetKeyValueIfNotPresent() {
+        File waLFile = new File("WALs/wal.tmp");
+        waLFile.delete();
         MockRouter router = new MockRouter(new KeyValueStoreApplication());
         router.get("/some_key", response -> {
             assertEquals(StatusCode.OK, response.getStatusCode());
