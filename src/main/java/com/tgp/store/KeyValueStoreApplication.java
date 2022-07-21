@@ -3,7 +3,8 @@ package com.tgp.store;
 import io.jooby.Jooby;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class KeyValueStoreApplication extends Jooby {
@@ -12,14 +13,22 @@ public class KeyValueStoreApplication extends Jooby {
 
   {
     WAL wal = new WAL();
-    InMemoryKVStore inMemoryKVStore = new InMemoryKVStore(new HashMap<>(), wal);
+    Map<String, String> kvStore = new ConcurrentHashMap<>();
+    InMemoryKVStore inMemoryKVStore = new InMemoryKVStore(kvStore, wal);
 
     get("/ping", ctx -> "pong");
+
     post("/", ctx -> {
       String keyValue = ctx.body().value();
       String[] splitKeyValue = keyValue.split(":");
       return inMemoryKVStore.set(splitKeyValue[0], splitKeyValue[1]);
     });
+
+//    post("/", ctx -> CompletableFuture.supplyAsync(() -> {
+//        String keyValue = ctx.body().value();
+//        String[] splitKeyValue = keyValue.split(":");
+//        return inMemoryKVStore.set(splitKeyValue[0], splitKeyValue[1]);
+//      }));
 
     get("/{key}", ctx -> {
       String key = ctx.path("key").value();

@@ -32,14 +32,15 @@ public class InMemoryKVStore {
     }
   }
 
-  public String get(final String key) {
+  public synchronized String get(final String key) {
     return kvStore.get(key);
   }
 
-  public String set(final String key, final String value) {
+  public synchronized String set(final String key, final String value) {
     boolean isAppended = wal.append(key, value);
-    log.info("is Appended: {}", isAppended);
+//    log.info("is Appended: {}", isAppended);
     kvStore.put(key, value);
-    return kvStore.get(key);
+//    return kvStore.get(key);
+    return value;
   }
 }

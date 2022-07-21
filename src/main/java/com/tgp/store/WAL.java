@@ -14,8 +14,9 @@ import java.io.IOException;
 @Slf4j
 public class WAL {
 
-  private DataOutputStream out;
-  private DataInputStream in;
+  private FileOutputStream fileOutputStream;
+  private DataOutputStream dataOutputStream;
+  private DataInputStream dataInputStream;
 
   public WAL() {
     File waLFile = new File("WALs/wal.tmp");
@@ -24,9 +25,11 @@ public class WAL {
         boolean isFileCreated = waLFile.createNewFile();
         log.info("Is WAL file created?:{}", isFileCreated);
       }
-      out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(waLFile, true)));
+      fileOutputStream = new FileOutputStream(waLFile, true);
+//      dataOutputStream = new DataOutputStream(new BufferedOutputStream(fileOutputStream));
+      dataOutputStream = new DataOutputStream(fileOutputStream);
       BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(waLFile));
-      this.in = new DataInputStream(bufferedInputStream);
+      this.dataInputStream = new DataInputStream(bufferedInputStream);
     } catch (IOException e) {
       log.error("Error creating the WAL file" , e);
       e.printStackTrace();
@@ -36,8 +39,9 @@ public class WAL {
   public boolean append(String key, String value) {
     boolean isAppended = false;
     try {
-      out.writeUTF(key + ":" + value);
-      out.flush();
+      dataOutputStream.writeUTF(key + ":" + value);
+      dataOutputStream.flush();
+      fileOutputStream.getFD().sync();
       isAppended = true;
     } catch (IOException e) {
       e.printStackTrace();
@@ -46,6 +50,6 @@ public class WAL {
   }
 
   public DataInputStream getInputStream() {
-    return in;
+    return dataInputStream;
   }
 }
